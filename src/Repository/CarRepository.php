@@ -1,29 +1,22 @@
 <?php
 declare(strict_types=1);
 
-class CarRepository
+require __DIR__ . '/../../database/BaseRepository.php';
+
+class CarRepository extends BaseRepository
 {
-    public $pdo;
+    public string $tableName = 'car';
 
-    public function __construct(PDO $pdo)
+    public function findAllByMaxPrice(): array
     {
-        $this->pdo = $pdo;
-    }
-
-    public function getAllCars(): array
-    {
-        $query = $this->pdo->prepare('SELECT * FROM car');
-        $query->execute();
-
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getCarsByMaxPrice(): array
-    {
-        $query = $this->pdo->prepare('SELECT * FROM car ORDER BY price DESC');
-        $query->execute();
-
-        return $query->fetchAll(PDO::FETCH_ASSOC);
+        return $this->findAll([
+            'orderBy' => [
+                'column' => 'price',
+                'sortType' => 'DESC'
+            ],
+            'limit' => 3,
+            'where' => ['id' => 1]
+        ]);
     }
 
     public function createCar()

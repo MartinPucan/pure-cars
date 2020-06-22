@@ -1,0 +1,6 @@
+{
+  "host": "localhost:8889",
+  "database": "cars",
+  "user": "root",
+  "password": "root"
+}

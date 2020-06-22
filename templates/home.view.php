@@ -1,4 +1,10 @@
-<?php require('partials/header.php'); ?>
+<?php
+require 'partials/header.php';
+require '../src/Repository/CarRepository.php';
+
+$carRepository = new CarRepository;
+$cars = $carRepository->findAll();
+?>
 
 <div class="container">
     <div class="tc">
@@ -32,17 +38,17 @@
 
         <tbody>
 
-            <?php foreach ($rows as $row) : ?>
+            <?php foreach ($cars as $car) : ?>
                 <tr>
-                    <th scope="row"><?= $row[0]; ?></th>
+                    <th scope="row"><?= $car['id']; ?></th>
                     <td>
-                        <a class="fs-md td_none" href="#id"><?= $row[1]; ?></a>
+                        <a class="fs-md td_none" href="detail.view.php/<?= $car['id'] ?>"><?= $car['name']; ?></a>
                     </td>
-                    <td><?= $row[2]; ?></td>
-                    <td><?= $row[3]; ?></td>
-                    <td><?= $row[4]; ?></td>
-                    <td><?= $row[5]; ?></td>
-                    <td><?= $row[6]; ?></td>
+                    <td></td>
+                    <td><?= $car['price']; ?></td>
+                    <td><?= $car['kilometer']; ?></td>
+                    <td><?= $car['registration']; ?></td>
+                    <td><?= $car['fuel_type']; ?></td>
                     <td>
                         <a href="#edit" class="btn bg-primary text-white">Edit</a>
                         <a href="#delete" class="btn bg-danger text-white">Delete</a>

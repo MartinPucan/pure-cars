@@ -1,8 +1,7 @@
 <?php
 
-require_once 'database/config.php';
-require_once 'database/Connection.php';
-$db = new Connection($pdo);
-$rows = $db->getCarsByMaxPrice();
+require_once 'src/Repository/CarRepository.php';
+$db = new CarRepository;
+$rows = $db->findAllByMaxPrice();
 
 print_r($rows);
