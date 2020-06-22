@@ -4,9 +4,11 @@ class Connection
 {
     public $pdo;
 
-    public function __construct(PDO $pdo)
+    public function __construct()
     {
-        $this->pdo = $pdo;
+        ['host' => $host, 'database' => $database, 'user' => $user, 'password' => $password] = $this->getConfig();
+
+        $this->pdo = new PDO("mysql:host={$host};dbname={$database}", $user, $password);
     }
 
     public function getAllCars(): array
@@ -33,5 +35,17 @@ class Connection
     public function createCar()
     {
 
+    }
+
+    private function getConfig(): array
+    {
+        $config = file_get_contents(__DIR__ . '/config.json');
+
+        if (!$config) {
+            echo 'Config not found!';
+            die;
+        }
+
+        return json_decode($config, true) ?? [];
     }
 }
