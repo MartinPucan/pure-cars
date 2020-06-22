@@ -4,6 +4,7 @@ require '../src/Repository/CarRepository.php';
 
 $carRepository = new CarRepository;
 $cars = $carRepository->findAll();
+
 ?>
 
 <div class="container">

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 class BaseRepository
 {
@@ -65,8 +66,7 @@ class BaseRepository
         $config = file_get_contents(__DIR__ . '/config.json');
 
         if (!$config) {
-            echo 'Config not found!';
-            die;
+            echo 'Config not found!';die;
         }
 
         return json_decode($config, true) ?? [];

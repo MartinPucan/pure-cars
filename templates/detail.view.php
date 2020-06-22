@@ -14,7 +14,12 @@ $car = $carRepository->findOne($carId);
 <div class="container">
     <div class="detail-card">
         <div class="shadow p-3 m-auto bg-light rounded">
-            <?= print_r($car) ?>
+            <div><?= ($car['id']) ?></div>
+            <div><?= ($car['name']) ?></div>
+            <div><?= ($car['price']) ?></div>
+            <div><?= ($car['kilometer']) ?></div>
+            <div><?= ($car['registration']) ?></div>
+            <div><?= ($car['fuel_type']) ?></div>
         </div>
     </div>
 </div>
