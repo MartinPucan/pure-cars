@@ -1,8 +1,13 @@
 <?php
-require 'partials/header.php';
-require '../src/Repository/CarRepository.php';
 
-$carRepository = new CarRepository;
+require 'partials/header.php';
+require __DIR__ . '/../database/Database.php';
+require __DIR__ . '/../src/Repository/CarRepository.php';
+
+$db = new Database();
+$dbb = $db->getConnection();
+
+$carRepository = new CarRepository($dbb);
 $cars = $carRepository->findAll();
 
 ?>
@@ -13,7 +18,9 @@ $cars = $carRepository->findAll();
     </div>
 
     <div class="m-2 d-flex">
-        <button class="btn btn-info ml-auto">Create new record</button>
+        <button class="btn bg-orange ml-auto">
+            <a href="/create" class="text-white">Create new record</a>
+        </button>
     </div>
 
     <div class="row border bg-light rounded-1 m-0 mb-2 p-2 tc">
@@ -43,16 +50,18 @@ $cars = $carRepository->findAll();
                 <tr>
                     <th scope="row"><?= $car['id']; ?></th>
                     <td>
-                        <a class="fs-md td_none" href="detail.view.php/<?= $car['id'] ?>"><?= $car['name']; ?></a>
+                        <a class="fs-md td_none" href="detail/<?= $car['id'] ?>">
+                            <?= $car['brand_name']." ".$car['name']; ?>
+                        </a>
                     </td>
-                    <td></td>
-                    <td><?= $car['price']; ?></td>
-                    <td><?= $car['kilometer']; ?></td>
+                    <td><?= $car['brand_id']; ?></td>
+                    <td><?= number_format($car['price']); ?> Kc</td>
+                    <td><?= $car['kilometer']; ?> km</td>
                     <td><?= $car['registration']; ?></td>
                     <td><?= $car['fuel_type']; ?></td>
                     <td>
-                        <a href="#edit" class="btn bg-primary text-white">Edit</a>
-                        <a href="#delete" class="btn bg-danger text-white">Delete</a>
+                        <a href="/edit/<?= $car['id'] ?>" class="btn bg-primary text-white">Edit</a>
+                        <a href="delete.php" class="btn bg-danger text-white">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

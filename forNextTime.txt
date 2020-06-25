@@ -26,20 +26,19 @@ class BaseRepository
     {
         $orderBy = $options['orderBy'] ?? [];
         $whereClauses = $options['where'] ?? [];
-        $limit = $options['limit'] ?? 0;
 
         $orderByClause = count($orderBy) === 0 ? '' : " order by {$orderBy['column']} {$orderBy['sortType']} ";
-        $limitClause = $limit === 0 ? '' : 'limit ' . $limit;
 
         $sql = <<<SQL
-        SELECT * FROM {$this->tableName} {$this->getWhereClause($whereClauses)} {$orderByClause} {$limitClause}
+        SELECT * FROM {$this->tableName} {$this->getWhereClause($whereClauses)} {$orderByClause} 
+        LIMIT 3 
         SQL;
-
         $query = $this->pdo->prepare($sql);
 
         foreach ($whereClauses as $column => $value) {
             $query->bindParam($column, $value);
         }
+        var_dump($query);die;
 
         $query->execute();
 
@@ -71,4 +70,44 @@ class BaseRepository
 
         return json_decode($config, true) ?? [];
     }
+}
+
+
+
+<?php
+declare(strict_types=1);
+
+require __DIR__ . '/../../database/BaseRepository.php';
+
+class CarRepository extends BaseRepository
+{
+    public string $tableName = 'car';
+
+    public function findAllByMaxPrice(): array
+    {
+        return $this->findAll([
+            'orderBy' => [
+                'column' => 'price',
+                'sortType' => 'DESC'
+            ],
+            'where' => ['id' => 1]
+        ]);
+    }
+
+    public function createCar()
+    {
+        $query = $this->pdo->prepare('INSERT INTO car ');
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteCar($id)
+    {
+        $query = $this->pdo->prepare('DELETE FROM products WHERE product_id={$id};');
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
